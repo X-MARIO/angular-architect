@@ -2,7 +2,14 @@
   "name": "@angular-architect/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "node ./node_modules/nx/bin/nx",
+    "ng": "node --max-old-space-size=8192 ./node_modules/nx/bin/nx",
+    "*** lds ***": "",
+    "start": "node ./node_modules/nx/bin/nx run admin-panel:serve:development --host 0.0.0.0 --poll 500 --no-cloud",
+    "admin-panel:build:development": "node --max-old-space-size=8192 ./node_modules/nx/bin/nx run admin-panel:build:development --no-cloud",
+    "build": "node --max-old-space-size=8192 ./node_modules/nx/bin/nx run admin-panel:build:production --no-cloud"
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "~19.2.0",
