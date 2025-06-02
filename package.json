@@ -15,7 +15,7 @@
     "ncu:update:interactive": "ncu -i --format group",
     "npm:audit": "npm audit",
     "npm:audit:fix": "npm audit fix --force",
-    "yarn:audit": "yarn npm audit",
+    "yarn:audit": "yarn npm audit --all",
     "yarn:audit:production": "yarn npm audit --environment production",
     "*** lint ***": "",
     "lint": "nx run-many --all --target=lint --no-cloud",
