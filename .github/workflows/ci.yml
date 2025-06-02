@@ -52,4 +52,4 @@ jobs:
         uses: nrwl/nx-set-shas@v4
 
       - name: Run Nx affected tasks
-        run: npx nx affected -t lint test build e2e
+        run: nx affected -t lint test build e2e --no-cloud
