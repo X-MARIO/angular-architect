@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "nx",
+    "nx": "node ./node_modules/nx/bin/nx",
+    "ng": "node --max-old-space-size=8192 ./node_modules/nx/bin/nx",
     "*** client ***": "",
-    "admin-panel:start:development": "nx run admin-panel:serve:development --host 0.0.0.0 --poll 500 --no-cloud",
-    "admin-panel:build:development": "nx run admin-panel:build:development --no-cloud",
-    "admin-panel:build:production": "nx run admin-panel:build:production --no-cloud",
+    "admin-panel:start:development": "node ./node_modules/nx/bin/nx run admin-panel:serve:development --host 0.0.0.0 --poll 500 --no-cloud",
+    "admin-panel:build:development": "node ./node_modules/nx/bin/nx run admin-panel:build:development --no-cloud",
+    "admin-panel:build:production": "node ./node_modules/nx/bin/nx run admin-panel:build:production --no-cloud",
     "*** config ***": "",
     "nx:update": "nx migrate latest",
     "nx:run-migrations": "nx migrate --run-migrations --if-exists --no-cloud",
@@ -205,5 +206,6 @@
     "@rollup/rollup-linux-x64-gnu": "4.41.1",
     "@rollup/rollup-win32-x64-msvc": "4.41.1"
   },
+  "resolutions": {},
   "packageManager": "yarn@4.9.1"
 }
