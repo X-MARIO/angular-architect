@@ -1,0 +1,86 @@
+# .gitlab-ci.yml
+
+# Определяем Docker-образ по умолчанию для всех заданий
+default:
+  image: node:22-slim # Используем Node.js 22 (slim-версия)
+
+# Определяем стадии конвейера
+stages:
+  - build_and_test # Можно назвать 'ci_checks' или разбить на больше стадий
+
+# Глобальные переменные
+variables:
+  # GIT_DEPTH: 0 обеспечивает полную историю клонирования, необходимо для 'nx affected'
+  # особенно при сравнении с HEAD~1 или другими ветками.
+  GIT_DEPTH: "0"
+  # Отключаем вывод прогресс-бара Yarn для более чистых логов CI
+  YARN_ENABLE_PROGRESS_BARS: "false"
+  # Переменная для указания пути кэша Playwright
+  PLAYWRIGHT_BROWSERS_PATH: "$CI_PROJECT_DIR/.cache/playwright-browsers"
+
+# Определение кэша для ускорения последующих сборок
+cache:
+  key:
+    files:
+      - yarn.lock # Ключ кэша зависит от yarn.lock
+  paths:
+    - ".yarn/cache" # Стандартный путь кэша для Yarn Berry PnP
+    - "$PLAYWRIGHT_BROWSERS_PATH" # Кэшируем установленные браузеры Playwright
+    - "node_modules/.cache/nx"   # Кэш для Nx (если используется)
+  policy: pull-push # Загружать кэш в начале, выгружать в конце при успехе
+
+# Основное задание для выполнения проверок
+nx_affected_checks:
+  stage: build_and_test
+  script:
+    # 1. Включаем Corepack (поставляется с Node.js >=16.9)
+    # Это позволит использовать версию Yarn, указанную в package.json
+    - corepack enable
+    - echo "Yarn version after corepack enable:"
+    - yarn --version # Проверка используемой версии Yarn
+
+    # 2. Установка зависимостей с использованием Yarn
+    # Команда --immutable гарантирует использование yarn.lock и не изменяет его
+    - yarn install --immutable --check-files
+
+    # 3. Установка браузеров для Playwright
+    # Используем переменную PLAYWRIGHT_BROWSERS_PATH для кэширования
+    - npx playwright install --with-deps
+
+    # 4. Установка переменных NX_BASE и NX_HEAD для команды 'nx affected'
+    # Эта логика определяет базу для сравнения в зависимости от типа события CI
+    - |
+      if [ -n "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
+        # Для Merge Requests
+        # Используем CI_MERGE_REQUEST_DIFF_BASE_SHA, если доступно, или целевую ветку
+        # Необходимо предварительно сделать fetch целевой ветки для корректного diff
+        git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+        export NX_BASE="origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+        export NX_HEAD="$CI_COMMIT_SHA" # Последний коммит в ветке MR
+        echo "Running in MR mode. NX_BASE=$NX_BASE, NX_HEAD=$NX_HEAD"
+      elif [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
+        # Для push-событий в основную ветку (например, main)
+        # Сравниваем с предыдущим коммитом
+        export NX_BASE="HEAD~1"
+        export NX_HEAD="HEAD"
+        echo "Running in Push to default branch mode. NX_BASE=$NX_BASE, NX_HEAD=$NX_HEAD"
+      else
+        # Для push-событий в другие ветки (feature branches)
+        # Сравниваем с основной веткой по умолчанию
+        git fetch origin $CI_DEFAULT_BRANCH
+        export NX_BASE="origin/$CI_DEFAULT_BRANCH"
+        export NX_HEAD="$CI_COMMIT_SHA"
+        echo "Running in Push to feature branch mode. NX_BASE=$NX_BASE, NX_HEAD=$NX_HEAD"
+      fi
+
+    # 5. Запуск команд Nx для затронутых проектов
+    # Флаг --no-cloud был в ваших примерах, можете оставить или убрать при необходимости
+    - npx nx affected -t lint test build e2e --no-cloud
+
+  # Правила, определяющие, когда запускать это задание
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"' # Запускать для Merge Requests
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"' # Запускать для push в основную ветку
+    - if: '$CI_COMMIT_BRANCH && $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH && $CI_OPEN_MERGE_REQUESTS == null'
+      # Запускать для push в feature-ветки, у которых еще нет открытого Merge Request.
+      # Это правило можно скорректировать или удалить в зависимости от вашей стратегии CI.
