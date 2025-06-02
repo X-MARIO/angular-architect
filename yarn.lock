@@ -71,6 +71,7 @@ __metadata:
     "@types/node": "npm:18.16.9"
     "@typescript-eslint/utils": "npm:8.33.0"
     angular-eslint: "npm:19.6.0"
+    corepack: "npm:^0.32.0"
     eslint: "npm:9.28.0"
     eslint-config-prettier: "npm:10.1.5"
     eslint-plugin-playwright: "npm:1.8.3"
@@ -7659,6 +7660,19 @@ __metadata:
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
   checksum: 10c0/90a0e40abbddfd7618f8ccd63a74d88deea94e77d0e8dbbea059fa7ebebb8fbb4e2909667fe26f3a467073de1a542ebe6ae4c73a73745ac5833786759cd906c9
+  languageName: node
+  linkType: hard
+
+"corepack@npm:^0.32.0":
+  version: 0.32.0
+  resolution: "corepack@npm:0.32.0"
+  bin:
+    corepack: ./dist/corepack.js
+    pnpm: ./dist/pnpm.js
+    pnpx: ./dist/pnpx.js
+    yarn: ./dist/yarn.js
+    yarnpkg: ./dist/yarnpkg.js
+  checksum: 10c0/4885773ea37e1b684bfc145a35dd32e794c8c21abbc668afdfc1f3c47dac15ad4a751cb6dfa025255491988231e977c081ab2f9d02099ab0adb0f4a24cfeacec
   languageName: node
   linkType: hard
 
