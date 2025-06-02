@@ -74,7 +74,6 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:18.16.9"],\
           ["@typescript-eslint/utils", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:8.33.0"],\
           ["angular-eslint", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:19.6.0"],\
-          ["corepack", "npm:0.32.0"],\
           ["eslint", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:9.28.0"],\
           ["eslint-config-prettier", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:10.1.5"],\
           ["eslint-plugin-playwright", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:1.8.3"],\
@@ -166,7 +165,6 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:18.16.9"],\
           ["@typescript-eslint/utils", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:8.33.0"],\
           ["angular-eslint", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:19.6.0"],\
-          ["corepack", "npm:0.32.0"],\
           ["eslint", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:9.28.0"],\
           ["eslint-config-prettier", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:10.1.5"],\
           ["eslint-plugin-playwright", "virtual:f87420ed329d9af151ab96e4b3c6613b4ad3f0a0ebb3100c567052a9d49642601e5250a773fb04d8b9696b39d94a61c422d32babc88af9f15a39b477ea6fabf1#npm:1.8.3"],\
@@ -12269,15 +12267,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../Users/xpave/AppData/Local/Yarn/Berry/cache/core-util-is-npm-1.0.3-ca74b76c90-10c0.zip/node_modules/core-util-is/",\
         "packageDependencies": [\
           ["core-util-is", "npm:1.0.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["corepack", [\
-      ["npm:0.32.0", {\
-        "packageLocation": "../../../Users/xpave/AppData/Local/Yarn/Berry/cache/corepack-npm-0.32.0-110fb5b378-10c0.zip/node_modules/corepack/",\
-        "packageDependencies": [\
-          ["corepack", "npm:0.32.0"]\
         ],\
         "linkType": "HARD"\
       }]\
