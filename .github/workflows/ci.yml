@@ -24,26 +24,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          # Мы убрали 'cache: yarn' отсюда, чтобы избежать вызова старой версии yarn
+            # cache: 'yarn' # Убрано, так как borales/actions-yarn будет управлять установкой
+            # или мы будем кэшировать вручную, если borales не справится.
+          # Для Yarn Berry и Corepack, actions/setup-node с cache: 'yarn' вызывал проблемы.
 
       - name: Enable Corepack
-        run: corepack enable # Включаем Corepack. Теперь команда 'yarn' будет использовать версию из package.json
+        run: corepack enable # Необходимо для Yarn 4.x
 
-      - name: Get Yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT # Получаем путь к кэшу Yarn 4.9.1
-
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v4
-        id: yarn-cache
+      # Этот шаг использует borales/actions-yarn.
+      # Учитывая, что он может быть только для Yarn 1.x,
+      # он может не сработать или сработать некорректно с Yarn 4.x + Corepack.
+      # Corepack должен сам обеспечить нужную версию Yarn после `corepack enable`.
+      - name: Install dependencies with borales/actions-yarn
+        uses: borales/actions-yarn@v4
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-v4-${{ hashFiles('**/yarn.lock') }} # Ключ кэша
-          restore-keys: |
-            ${{ runner.os }}-yarn-v4-
+          cmd: install --immutable # Команда, которую должен выполнить yarn
 
-      - name: Install dependencies with Yarn
-        run: yarn install --immutable
+      # Если шаг выше не сработает из-за несовместимости borales/actions-yarn с Yarn Berry,
+      # раскомментируйте следующую строку и закомментируйте шаг с borales/actions-yarn:
+      # - name: Install dependencies with Yarn (Corepack managed)
+      #   run: yarn install --immutable
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
